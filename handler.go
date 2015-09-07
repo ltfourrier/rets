@@ -16,6 +16,12 @@ func HandlerHTTPBadRequest(writer http.ResponseWriter, request *http.Request) {
 	HandlerHTTPError(writer, payload)
 }
 
+func HandlerHTTPUnauthorized(writer http.ResponseWriter,
+	request *http.Request) {
+	payload := ErrorPayload{401, "unauthorized"}
+	HandlerHTTPError(writer, payload)
+}
+
 func HandlerHTTPNotFound(writer http.ResponseWriter, request *http.Request) {
 	payload := ErrorPayload{404, "resource not found"}
 	HandlerHTTPError(writer, payload)

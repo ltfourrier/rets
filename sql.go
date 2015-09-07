@@ -15,7 +15,7 @@ type DatabaseConfiguration struct {
 
 func OpenDatabase(config DatabaseConfiguration) (db *sql.DB, err error) {
 	db, err = sql.Open(config.Driver, config.Username+":"+config.Password+
-		"@tcp("+config.Host+")/"+config.Database)
+		"@tcp("+config.Host+")/"+config.Database+"?parseTime=true")
 	if err != nil {
 		return
 	}
