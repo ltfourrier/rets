@@ -27,6 +27,11 @@ func HandlerHTTPNotFound(writer http.ResponseWriter, request *http.Request) {
 	HandlerHTTPError(writer, payload)
 }
 
+func HandlerHTTPOK(writer http.ResponseWriter, request *http.Request) {
+	payload := ErrorPayload{200, "success"}
+	HandlerHTTPError(writer, payload)
+}
+
 func HandlerHTTPError(writer http.ResponseWriter, payload ErrorPayload) {
 	writer.WriteHeader(payload.Code)
 	data, err := json.Marshal(&payload)
