@@ -6,38 +6,47 @@ import (
 	"net/http"
 )
 
-type ErrorPayload struct {
+type BasicPayload struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 }
 
-func HandlerHTTPBadRequest(writer http.ResponseWriter, request *http.Request) {
-	payload := ErrorPayload{400, "invalid request"}
-	HandlerHTTPError(writer, payload)
+func HandlerError(writer http.ResponseWriter, err error) {
+	log.Println(err)
+	HandlerHTTPInternalError(writer)
 }
 
-func HandlerHTTPUnauthorized(writer http.ResponseWriter,
-	request *http.Request) {
-	payload := ErrorPayload{401, "unauthorized"}
-	HandlerHTTPError(writer, payload)
+func HandlerHTTPOK(writer http.ResponseWriter) {
+	HandlerBasic(writer, BasicPayload{200, "success"})
 }
 
-func HandlerHTTPNotFound(writer http.ResponseWriter, request *http.Request) {
-	payload := ErrorPayload{404, "resource not found"}
-	HandlerHTTPError(writer, payload)
+func HandlerHTTPBadRequest(writer http.ResponseWriter) {
+	HandlerBasic(writer, BasicPayload{400, "invalid request"})
 }
 
-func HandlerHTTPOK(writer http.ResponseWriter, request *http.Request) {
-	payload := ErrorPayload{200, "success"}
-	HandlerHTTPError(writer, payload)
+func HandlerHTTPUnauthorized(writer http.ResponseWriter) {
+	HandlerBasic(writer, BasicPayload{401, "unauthorized"})
 }
 
-func HandlerHTTPError(writer http.ResponseWriter, payload ErrorPayload) {
-	writer.WriteHeader(payload.Code)
+func HandlerHTTPNotFound(writer http.ResponseWriter) {
+	HandlerBasic(writer, BasicPayload{404, "resource not found"})
+}
+
+func HandlerHTTPInternalError(writer http.ResponseWriter) {
+	HandlerBasic(writer, BasicPayload{500, "internal server error"})
+}
+
+func HandlerBasic(writer http.ResponseWriter, payload BasicPayload) {
 	data, err := json.Marshal(&payload)
 	if err != nil {
 		log.Println("JSON Marshal error: " + err.Error())
+		writer.WriteHeader(500)
 		return
+	}
+	if payload.Code >= 1000 {
+		writer.WriteHeader(400)
+	} else {
+		writer.WriteHeader(payload.Code)
 	}
 	writer.Write(data)
 }

@@ -38,7 +38,7 @@ func (router *Router) ServeHTTP(writer http.ResponseWriter,
 			return
 		}
 	}
-	HandlerHTTPNotFound(writer, request)
+	HandlerHTTPNotFound(writer)
 }
 
 func (router *Router) AddRoute(route Route) {
