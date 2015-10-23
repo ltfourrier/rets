@@ -26,8 +26,8 @@ func NewRouter() (router *Router) {
 
 func (router *Router) ServeHTTP(writer http.ResponseWriter,
 	request *http.Request) {
-	// We preemptively set the response content type to JSON, as ReTS APIs don't
-	// output anything else, even when there is a HTTP error.
+	// We preemptively set the response content type to JSON, as ReTS APIs
+	// don't output anything else, even when there is a HTTP error.
 	writer.Header().Set("Content-Type", "application/json")
 
 	// Try to route the request, returns 404 if no route matched the path
