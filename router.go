@@ -42,7 +42,7 @@ func (router *Router) ServeHTTP(writer http.ResponseWriter,
 			return
 		}
 	}
-	HandlerHTTPNotFound(writer)
+	HandlerBasicHTTP(writer, 404)
 }
 
 // AddRoute adds a given Route to a Router.
